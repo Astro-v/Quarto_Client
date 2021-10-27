@@ -1,0 +1,15 @@
+g++ -Wall -Wextra -L./lib -l./include src/main.cpp -o main -lsfml-graphics -lsfml-system
+
+g++ -Wall -Wextra -L.\lib -I.\include src\main.cpp -o main -lsfml-graphics -lsfml-system
+
+g++ src\main.cpp -L.\lib -I.\include -lsfml-graphics -lsfml-system
+
+
+1)g++ -I.\include -c src/main.cpp -o src/main.o
+2)g++ -L.\lib -o src/main.exe src/main.o -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
+
+g++ -L.\lib -o src/main.exe src/main.o -lsfml-graphics -lsfml-window -lsfml-system -lsfml-main -mwindows
+
+
+
+g++ src\*.cpp  -L.\lib -I.\include -o output\Pong.exe -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
