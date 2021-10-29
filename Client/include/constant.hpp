@@ -13,6 +13,16 @@
 #define NUMBER_COLUMN 4
 #define NUMBER_PIECES (NUMBER_ROW*NUMBER_COLUMN)
 
+/*---- WINDOW ----*/
+#define HEIGHT_SCORE 200    // px
+#define HEIGHT_PLATEAU 600  // px
+#define WIDTH_PLATEAU 600   // px
+#define HEIGHT 800          // px
+#define WIDTH 1200          // px
+#define HEIGHT_PIECE 100    // px
+#define WIDTH_PIECE 100     // px
+#define SPACE 40            // px
+
 
 /*---- SERVER ----*/
 #define SERVER_PORT 5500	
@@ -29,6 +39,7 @@ struct ToReceive{
     Status status;
     int posX[NUMBER_PIECES];
     int posY[NUMBER_PIECES];
+    bool used[NUMBER_PIECES];
     int pick;
 };
 
@@ -36,6 +47,6 @@ struct ToReceive{
 struct ToSend{
     int posX;
     int posY;
-}
+};
 
 #endif // __CONSTANT_HPP__

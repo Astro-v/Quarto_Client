@@ -13,9 +13,12 @@
 
 /*---- LOCAL FILE ----*/
 #include "constant.hpp"
+#include "quarto.hpp"
 
 using namespace std;
 
 int main(){
+    Quarto quarto;
+    quarto.play();
     return 0;
 }
