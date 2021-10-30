@@ -10,7 +10,7 @@
 #include "constant.hpp"
 #include "quarto.hpp"
 
-Quarto::Quarto():_status(PAUSE),_play(true){
+Quarto::Quarto(std::string name):_status(PAUSE),_play(true),_nameP1(name){
     for (int index=0;index<NUMBER_PIECES;++index){
         _posX[index]=index/NUMBER_ROW;
         _posY[index]=index%NUMBER_COLUMN;
@@ -47,7 +47,7 @@ Quarto::Quarto():_status(PAUSE),_play(true){
 
 void Quarto::play(){
     std::cout << "Initializing client ..." << std::endl;
-    _client.initialize(_receive);
+    _client.initialize(_receive,_nameP1,_nameP2);
     _status = _receive.status;
     for (int index=0;index<NUMBER_PIECES;++index){
         _posX[index] = _receive.posX[index];
@@ -66,6 +66,7 @@ void Quarto::play(){
             // Request for closing the window
             if (_event.type == sf::Event::Closed){
                 _play = false;
+                _client.sendData(_send, LEAVE);
                 _window.close();
             }
             if (_event.type == sf::Event::MouseButtonPressed){
@@ -76,13 +77,13 @@ void Quarto::play(){
                                 if (_status == PLAYER_1_PLACE){
                                     _send.posX = i;
                                     _send.posY = j;
-                                    _client.sendData(_send);
+                                    _client.sendData(_send, GAME_CLIENT);
                                 }
                             }else if (_event.mouseButton.x >= WIDTH_PLATEAU+SPACE+(SPACE+WIDTH_PIECE)*i && _event.mouseButton.x <= WIDTH_PLATEAU+SPACE+WIDTH_PIECE+(SPACE+WIDTH_PIECE)*i && _event.mouseButton.y >= HEIGHT_SCORE+SPACE+(SPACE+HEIGHT_PIECE)*j && _event.mouseButton.y <= HEIGHT_SCORE+HEIGHT_PIECE+SPACE+(SPACE+HEIGHT_PIECE)*j && _status == PLAYER_1_PICK){
                                 if (_status == PLAYER_1_PICK){
                                     _send.posX = i;
                                     _send.posY = j;
-                                    _client.sendData(_send);
+                                    _client.sendData(_send, GAME_CLIENT);
                                 }
                             }
                         }

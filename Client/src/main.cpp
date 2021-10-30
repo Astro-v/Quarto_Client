@@ -18,7 +18,7 @@
 using namespace std;
 
 int main(){
-    Quarto quarto;
+    Quarto quarto("Didou");
     quarto.play();
     return 0;
 }

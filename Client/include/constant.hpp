@@ -35,6 +35,10 @@ enum Status{
 #define NONE -1
 
 /*---- TO RECEIVE ----*/
+enum TypeReceive{
+    CONNECT_SERVER, GAME_SERVER, WIN_P1, WIN_P2
+};
+
 struct ToReceive{
     Status status;
     int posX[NUMBER_PIECES];
@@ -44,6 +48,10 @@ struct ToReceive{
 };
 
 /*---- TO SEND ----*/
+enum TypeSend{
+    CONNECT_CLIENT, GAME_CLIENT, LEAVE
+};
+
 struct ToSend{
     int posX;
     int posY;
