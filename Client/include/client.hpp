@@ -15,12 +15,16 @@ class Client
 {
 public:
 	Client();
-	void initialize(ToReceive &data, std::string &nameP1, std::string &nameP2);
-	bool receiveData(ToReceive &data);
+	void connectToServer(std::string &name);
+	void initialize(ToReceive &data);
+	TypeReceive receiveData(ToReceive &data);
 	void sendData(const ToSend &data, const TypeSend &typeSend);
+	std::string getNamePlayer2();
+	bool getReady() const;
+	int getNbrPlayer() const;
 	
 private:
-	sf::UdpSocket _socket;
+	sf::TcpSocket _socket;
 	sf::Packet _packetR;           // packet to receive
 	sf::Packet _packetS;           // packet to send
 	TypeReceive _typeReceive;
@@ -29,6 +33,8 @@ private:
 	unsigned short _portServer;
 	sf::IpAddress _addressServer;  // For the server
 	std::string _namePlayer2;
+	bool _playing;
+	int _nbrPlayer;
 
 };
 

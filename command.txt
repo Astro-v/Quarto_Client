@@ -13,3 +13,5 @@ g++ -L.\lib -o src/main.exe src/main.o -lsfml-graphics -lsfml-window -lsfml-syst
 
 
 g++ src\*.cpp  -L.\lib -I.\include -o output\Pong.exe -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
+
+g++ src\*.cpp -mwindows -L.\lib -I.\include -o output\Quarto.exe -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio

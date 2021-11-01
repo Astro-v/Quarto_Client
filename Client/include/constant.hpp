@@ -13,6 +13,18 @@
 #define NUMBER_COLUMN 4
 #define NUMBER_PIECES (NUMBER_ROW*NUMBER_COLUMN)
 
+/*---- HOME PAGE ----*/
+#define HEIGHT_HOME_PAGE 600
+#define WIDTH_HOME_PAGE 600
+#define HEIGHT_BUTTON 100
+#define WIDTH_BUTTON 500
+#define POS_BUTTON_X 50
+#define POS_BUTTON_Y 300
+
+enum TypeGame{
+    NO_GAME, QUARTO
+};
+
 /*---- WINDOW ----*/
 #define HEIGHT_SCORE 200    // px
 #define HEIGHT_PLATEAU 600  // px
@@ -36,7 +48,7 @@ enum Status{
 
 /*---- TO RECEIVE ----*/
 enum TypeReceive{
-    CONNECT_SERVER, GAME_SERVER, WIN_P1, WIN_P2
+    CONNECT_SERVER, GAME_SERVER, WIN_P1, WIN_P2, NOTHING
 };
 
 struct ToReceive{

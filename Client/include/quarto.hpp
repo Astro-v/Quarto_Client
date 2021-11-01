@@ -17,13 +17,11 @@
 class Quarto{
     public:
     Quarto(std::string name);
-    void play();
+    void play(Client *client);
 
     private:
     // METHOD
     bool isPlacable(int posX, int posY) const;   // Return true if the given position car receive a piece
-    bool isPickable(int posX, int posY) const;   // Return true if the picked piece is pickable
-    int picked(int posX, int posY) const;        // Return the picked piece
     void display();
 
     // GAME
@@ -33,13 +31,14 @@ class Quarto{
     int _posY[NUMBER_PIECES];                     // Ordinate of the pieces
     bool _used[NUMBER_PIECES];                    // True if a piece is used
     int _pick;                                    // Correspond to the picked piece -1:NONE
-    std::string _nameP1;
-    std::string _nameP2;
+    std::string _name;
+    int _winner;
     
     // SERVER
-    Client _client;                               // Client that allow to communicate with client
+    Client *_client;                               // Client that allow to communicate with client
     ToReceive _receive;                           // Structure to receive from the server
 	ToSend _send;                                 // Structure to send to the server
+    TypeReceive _typeReceive;
 
     // WINDOW
     sf::RenderWindow _window;                     // For the window

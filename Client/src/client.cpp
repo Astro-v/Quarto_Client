@@ -9,10 +9,7 @@
 #include "constant.hpp"
 #include "client.hpp"
 
-Client::Client():_addressServer(SERVER_ADRESS),_portServer(SERVER_PORT){
-	if (_socket.bind(sf::Socket::AnyPort) != sf::Socket::Done){
-    	// error...
-	}
+Client::Client():_addressServer(SERVER_ADRESS),_portServer(SERVER_PORT),_nbrPlayer(0),_playing(false){
 	_packetR.clear();
 	_packetS.clear();
 }
@@ -20,54 +17,67 @@ Client::Client():_addressServer(SERVER_ADRESS),_portServer(SERVER_PORT){
 /*
 Wait until the two player connect to the server
 */
-void Client::initialize(ToReceive &dataR, std::string &nameP1, std::string &nameP2){
+void Client::connectToServer(std::string &name){
+	++_nbrPlayer;
 	_socket.setBlocking(true);
 
 	// Connection to the server
-	std::cout << "connecting to server" << std::endl;
-	_packetS.clear();
-	_packetS << CONNECT_CLIENT << nameP1;
-	if (_socket.send(_packetS,_addressServer,_portServer) != sf::Socket::Done){
+	if (_socket.connect(_addressServer,_portServer) != sf::Socket::Done){
 		// error
 	}
 	_packetS.clear();
-
-	std::cout << "Waiting for other player" << std::endl;
-	// Waiting the server for begin
-	receiveData(dataR);
-
+	_packetS << CONNECT_CLIENT << name;
+	_socket.send(_packetS);
+	_packetS.clear();
 	_socket.setBlocking(false);
 }
 
-bool Client::receiveData(ToReceive &data){
-	_packetR.clear();
-	if (_socket.receive(_packetR,_address,_port) == sf::Socket::Done){
-		// we received something
-		if (_addressServer == _address && _portServer == _port){
-			_packetR >> _typeReceive;
-			if (_typeReceive == GAME_SERVER){
-				_packetR >> data;
-			}else if (_typeReceive == CONNECT_SERVER){
-				_packetR >> _namePlayer2;
-			}else if (_typeReceive == WIN_P1){
-
-			}else if (_typeReceive == WIN_P2){
-
-			}
-			_packetR.clear();
-			return true; // the sender is the server
-		}
-	}
-	_packetR.clear();
-	return false; // No data received
+void Client::initialize(ToReceive &data){
+	_socket.setBlocking(true);
+	receiveData(data);
+	_socket.setBlocking(false);
 }
 
+TypeReceive Client::receiveData(ToReceive &data){
+	_packetR.clear();
+	if (_socket.receive(_packetR) == sf::Socket::Done){
+		// we received something
+		_packetR >> _typeReceive;
+		if (_typeReceive == GAME_SERVER){
+			_packetR >> data;
+		}else if (_typeReceive == CONNECT_SERVER){
+			_packetR >> _namePlayer2;
+			_playing = true;
+			++_nbrPlayer;
+		}else if (_typeReceive == WIN_P1){
+			_packetR >> data;
+		}else if (_typeReceive == WIN_P2){
+			_packetR >> data;
+		}
+		_packetR.clear();
+		return _typeReceive; // the sender is the server
+	}
+	_packetR.clear();
+	return NOTHING; // No data received
+}
 
 void Client::sendData(const ToSend &data, const TypeSend &typeSend){
 	_packetS.clear();
 	_packetS << typeSend << data;
-	_socket.send(_packetS, _addressServer, _portServer); // send to the server
+	_socket.send(_packetS); // send to the server
 	_packetS.clear();
+}
+
+std::string Client::getNamePlayer2(){
+	return _namePlayer2;
+}
+
+bool Client::getReady() const{
+	return _playing;
+}
+
+int Client::getNbrPlayer() const{
+	return _nbrPlayer;
 }
 
 sf::Packet& operator >>(sf::Packet& packet, ToReceive& data){

@@ -13,12 +13,12 @@
 
 /*---- LOCAL FILE ----*/
 #include "constant.hpp"
-#include "quarto.hpp"
+#include "home_page.hpp"
 
 using namespace std;
 
 int main(){
-    Quarto quarto("Didou");
-    quarto.play();
+    HomePage homePage("Didou");
+    homePage.mainWindow();
     return 0;
 }
